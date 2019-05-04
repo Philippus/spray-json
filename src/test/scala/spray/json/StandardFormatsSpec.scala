@@ -16,6 +16,7 @@
 
 package spray.json
 
+import java.util.UUID
 import org.specs2.mutable._
 import scala.Right
 
@@ -116,6 +117,16 @@ class StandardFormatsSpec extends Specification with DefaultJsonProtocol {
     }
     "be able to convert a JsArray to a (Int, Double, Int, Int, Int, Int, Int)]" in {
       json.convertTo[(Int, Double, Int, Int, Int, Int, Int)] mustEqual ((42, 4.2, 3, 4, 5, 6, 7))
+    }
+  }
+
+  "The uuidFormat" should {
+    val uuid = UUID.randomUUID()
+    "convert a UUID to a JsString" in {
+      uuid.toJson mustEqual JsString(uuid.toString)
+    }
+    "support round-trip (de)serialization" in {
+      uuid.toJson.convertTo[UUID] mustEqual uuid
     }
   }
 }
